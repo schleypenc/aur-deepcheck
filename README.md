@@ -5,7 +5,7 @@ Detection toolkit for the **atomic-lockfile / js-digest** AUR supply-chain incid
 This project combines:
 
 1. **Community scanner** (`lenucksi/aur-malware-check`)
-2. **Deep forensic scanner** (`aur-deepcheck.sh`)
+2. **Deep scanner** (`aur-deepcheck.sh`)
 
 The goal is to detect both known compromised packages and post-compromise indicators that are not covered by the community scanner alone.
 
@@ -25,7 +25,7 @@ It automatically:
 
 - clones or updates `lenucksi/aur-malware-check`
 - executes the community scanner
-- executes the deep forensic pass
+- executes the deep pass
 - returns a consolidated verdict
 
 ---
