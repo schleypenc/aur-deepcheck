@@ -30,36 +30,6 @@ It automatically:
 
 ---
 
-# Design Changes
-
-Compared to the original implementation:
-
-- no `/tmp` logging
-- logs stored in the cloned repository
-- clone/pull executed as the real user (`SUDO_USER`)
-- compatible with `noexec` mounts
-- scanner executed through `bash`
-- automatic handling of root-owned legacy clones
-- deterministic exit codes
-
----
-
-# Repository Layout
-
-After first execution:
-
-```text
-.
-├── aur-check.sh
-├── aur-deepcheck.sh
-└── aur-malware-check
-    ├── aur_check-v2.sh
-    ├── package_list.txt
-    └── logs
-```
-
----
-
 # Usage
 
 Recommended:
@@ -79,34 +49,6 @@ Optional:
 ```bash
 sudo MAX_PID_PROBE=65536 ./aur-check.sh
 ```
-
----
-
-# Logging
-
-Community scanner logs are stored in:
-
-```text
-aur-malware-check/logs/
-```
-
-Reasons:
-
-- avoids permission conflicts
-- survives reboots
-- avoids tmp cleanup
-- avoids root/user ownership issues
-
----
-
-# Exit Codes
-
-| Code | Meaning |
-|------|---------|
-| 0 | Clean |
-| 1 | Warnings |
-| 2 | Critical indicators |
-| 3 | Internal error |
 
 ---
 
@@ -232,3 +174,5 @@ If CRITICAL findings are reported:
 - Arch Linux community
 - lenucksi/aur-malware-check
 - Incident researchers and analysts documenting the June 2026 compromise
+- Claude Fable
+- OpenAI ChatGPT 5.5
