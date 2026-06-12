@@ -80,7 +80,7 @@ https://github.com/lenucksi/aur-malware-check
 
 ---
 
-# Pass 2 — Deep Forensic Scanner
+# Pass 2 — Deep Scanner
 
 ## Section A
 
