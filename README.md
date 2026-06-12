@@ -30,6 +30,16 @@ It automatically:
 
 ---
 
+## Optional Dependency
+
+`bpftool` is used for kernel BPF object enumeration and rootkit detection.
+
+```bash
+pacman -S bpf
+```
+
+Without it, section F (Kernel BPF Enumeration) will be skipped.
+
 # Usage
 
 Recommended:
