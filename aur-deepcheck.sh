@@ -14,7 +14,7 @@ VERSION="2.1"
 WIN_START="${WIN_START:-2026-06-09 00:00:00}"
 WIN_END="${WIN_END:-2026-06-13 00:00:00}"
 #IOC_REGEX="${IOC_REGEX:-atomic-lockfile|js-digest|herbsobering|temp\.sh|\.onion}"
-IOC_REGEX="atomic-lockfile|js-digest|lockfile-js|herbsobering|temp\.sh|\.onion|mon-ioc-custom"
+IOC_REGEX="${IOC_REGEX:-atomic-lockfile|js-digest|lockfile-js|herbsobering|temp\.sh|\.onion}"
 MAX_PID_PROBE="${MAX_PID_PROBE:-65536}"
 
 REAL_USER="${SUDO_USER:-$(id -un)}"
