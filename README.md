@@ -173,6 +173,68 @@ While no userland scanner can provide absolute guarantees, a fully clean run pro
 
 ---
 
+
+# IOC String Detection (`IOC_REGEX`)
+
+Pass 2 searches AUR helper caches, pacman scriptlets, and the system journal for
+injection strings using a single configurable regex:
+
+```bash
+IOC_REGEX="atomic-lockfile|js-digest|lockfile-js|herbsobering|temp\.sh|\.onion"
+```
+
+| String | Role |
+|--------|------|
+| `atomic-lockfile` | Wave 1 malicious npm package |
+| `js-digest` | Wave 2 malicious bun package |
+| `lockfile-js` | Wave 3 malicious npm package (same publisher) |
+| `herbsobering` | npm publisher account behind all three waves |
+| `temp.sh` | Exfiltration endpoint used by the payload |
+| `.onion` | Tor C2 infrastructure |
+
+If a new campaign wave is identified with a new package name or publisher,
+extend the regex at runtime without modifying any file:
+
+```bash
+sudo IOC_REGEX="atomic-lockfile|js-digest|lockfile-js|herbsobering|temp\.sh|\.onion|new-package-name" ./aur-check.sh
+```
+
+The regex is passed through to all relevant checks in `aur-deepcheck.sh`
+(sections B, C, and I).
+
+# IOC Regex — Detection Strings
+
+`aur-deepcheck.sh` greps build caches, pacman scriptlets, and the system journal
+for a set of known-malicious strings. The active regex is defined at the top of
+the script and can be extended at runtime without editing the file:
+
+```bash
+sudo IOC_REGEX="atomic-lockfile|js-digest|lockfile-js|herbsobering|temp\.sh|\.onion|my-new-ioc" ./aur-check.sh
+```
+
+Current strings and why each one is there:
+
+| String | Added | Reason |
+|--------|-------|--------|
+| `atomic-lockfile` | Jun 9, 2026 — Wave 1 | The npm package injected into AUR `.install` and `.hook` files by accounts `krisztinavarga` / `arojas` (impersonated). Executing it drops the `deps` Rust ELF infostealer. |
+| `js-digest` | Jun 12, 2026 — Wave 2 | The bun package injected into `PKGBUILD`/`.install` files by accounts `custodiatovar` / `veramagalhaes`. Same npm publisher (`herbsobering`), different ELF payload. |
+| `lockfile-js` | Jun 12, 2026 — Wave 2 variant | Third malicious package identified by Sonatype during Wave 2 analysis. Same infrastructure and publisher as `js-digest`. |
+| `herbsobering` | Jun 9, 2026 — Both waves | The npm account that published all three malicious packages. Matching on the publisher name catches any future package pushed by the same actor even if the package name changes. |
+| `temp.sh` | Jun 9, 2026 — Both waves | The exfiltration endpoint. The `deps` binary uploads stolen credentials to `temp.sh` before establishing the Tor C2 channel. A hit in the journal means the payload ran and exfiltrated data. |
+| `.onion` | Jun 9, 2026 — Both waves | The Tor-based C2 suffix. The payload communicates with a hidden service for command-and-control. Any `.onion` reference in the attack window journal is a strong indicator of active C2 contact. |
+
+## Adding New IOCs
+
+If a new wave is identified with a new package name or infrastructure domain, add it to the regex without touching the script:
+
+```bash
+sudo IOC_REGEX="atomic-lockfile|js-digest|lockfile-js|herbsobering|temp\.sh|\.onion|new-package-name" ./aur-check.sh
+```
+
+Or edit the `IOC_REGEX` line at the top of `aur-deepcheck.sh` to make the change permanent.
+
+---
+
 # Limitations
 
 No userland tool can fully exclude:
