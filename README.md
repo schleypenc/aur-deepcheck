@@ -236,6 +236,7 @@ If CRITICAL findings are reported:
 
 - Arch Linux community
 - lenucksi/aur-malware-check
+- gr.ht/aur_pkg_list.txt
 - Incident researchers and analysts documenting the June 2026 compromise
-- Claude Fable
+- Claude Fable (RIP)
 - OpenAI ChatGPT 5.5
