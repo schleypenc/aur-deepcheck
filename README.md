@@ -173,35 +173,6 @@ While no userland scanner can provide absolute guarantees, a fully clean run pro
 
 ---
 
-
-# IOC String Detection (`IOC_REGEX`)
-
-Pass 2 searches AUR helper caches, pacman scriptlets, and the system journal for
-injection strings using a single configurable regex:
-
-```bash
-IOC_REGEX="atomic-lockfile|js-digest|lockfile-js|herbsobering|temp\.sh|\.onion"
-```
-
-| String | Role |
-|--------|------|
-| `atomic-lockfile` | Wave 1 malicious npm package |
-| `js-digest` | Wave 2 malicious bun package |
-| `lockfile-js` | Wave 3 malicious npm package (same publisher) |
-| `herbsobering` | npm publisher account behind all three waves |
-| `temp.sh` | Exfiltration endpoint used by the payload |
-| `.onion` | Tor C2 infrastructure |
-
-If a new campaign wave is identified with a new package name or publisher,
-extend the regex at runtime without modifying any file:
-
-```bash
-sudo IOC_REGEX="atomic-lockfile|js-digest|lockfile-js|herbsobering|temp\.sh|\.onion|new-package-name" ./aur-check.sh
-```
-
-The regex is passed through to all relevant checks in `aur-deepcheck.sh`
-(sections B, C, and I).
-
 # IOC Regex — Detection Strings
 
 `aur-deepcheck.sh` greps build caches, pacman scriptlets, and the system journal
